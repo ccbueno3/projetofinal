@@ -1,5 +1,5 @@
-import random
 import pygame
+import random
 
 # Cores
 BRANCO = (255, 255, 255)
@@ -66,8 +66,7 @@ class Tronco(pygame.sprite.Sprite):
         if self.rect.left > largura:
             self.rect.right = 0
         if self.rect.right < 0:
-            self.rect.left = largura    
-
+            self.rect.left = largura
 
 # Inicialização do Pygame
 pygame.init()
@@ -93,7 +92,7 @@ for i in range(num_blocos_y // 2, num_blocos_y - 2):
 
 # Criação dos troncos
 troncos = pygame.sprite.Group()
-for i in range(num_blocos_y // 2 - 2):
+for i in range(num_blocos_y // 2 - 1):
     x = random.randint(0, num_blocos_x - 4)  # Reduzindo 4 para acomodar o tamanho dos troncos
     y = i + 1
     velocidade = random.choice([-1, 1]) * largura_bloco // 4
@@ -145,8 +144,16 @@ while rodando:
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
 
+    # Verifica se o jogador encostou na região azul
+    if jogador.rect.colliderect(pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco)):
+        rodando = False
+
     # Renderização do jogo
     tela.fill(BRANCO)
+    
+    # Preenchendo a área dos troncos com azul
+    pygame.draw.rect(tela, (0, 0, 255), pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco))
+    
     sprites.draw(tela)
 
     # Exibe a pontuação na tela
