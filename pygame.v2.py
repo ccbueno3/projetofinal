@@ -1,11 +1,11 @@
-import pygame
 import random
+import pygame
 
 # Cores
 BRANCO = (255, 255, 255)
 LARANJA = (255, 165, 0)
 PRETO = (0, 0, 0)
-MARROM = (150,75,0)
+MARROM = (150, 75, 0)
 
 # Dimensões da janela do jogo
 largura = 800
@@ -26,7 +26,6 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * largura_bloco
         self.rect.y = y * altura_bloco
-
 
     def update(self, dx=0, dy=0):
         if 0 <= self.rect.x + dx < largura - largura_bloco and dx != 0:
@@ -53,13 +52,13 @@ class Carro(pygame.sprite.Sprite):
             self.rect.left = largura
 
 class Tronco(pygame.sprite.Sprite):
-    def __init__(self,x,y,velocidade):
+    def __init__(self, x, y, velocidade):
         super().__init__()
-        self.image = pygame.Surface((largura_bloco,altura_bloco))
+        self.image = pygame.Surface((largura_bloco * 3 + largura_bloco, altura_bloco))
         self.image.fill(MARROM)
         self.rect = self.image.get_rect()
-        self.rect.x = x*largura_bloco
-        self.rect.y = y*largura_bloco
+        self.rect.x = x * largura_bloco
+        self.rect.y = y * altura_bloco
         self.velocidade = velocidade
 
     def update(self):
@@ -84,7 +83,7 @@ sprites.add(jogador)
 
 # Criação dos carros
 carros = pygame.sprite.Group()
-for i in range(num_blocos_y//2, num_blocos_y-2):
+for i in range(num_blocos_y // 2, num_blocos_y - 2):
     x = random.randint(0, num_blocos_x - 1)
     y = i + 1
     velocidade = random.choice([-1, 1]) * largura_bloco // 4
@@ -92,10 +91,10 @@ for i in range(num_blocos_y//2, num_blocos_y-2):
     sprites.add(carro)
     carros.add(carro)
 
-#Criação dos trocos
+# Criação dos troncos
 troncos = pygame.sprite.Group()
-for i in range(num_blocos_y//2 - 2):
-    x = random.randint(0, num_blocos_x - 1)
+for i in range(num_blocos_y // 2 - 2):
+    x = random.randint(0, num_blocos_x - 4)  # Reduzindo 4 para acomodar o tamanho dos troncos
     y = i + 1
     velocidade = random.choice([-1, 1]) * largura_bloco // 4
     tronco = Tronco(x, y, velocidade)
@@ -145,8 +144,6 @@ while rodando:
             pontuacao += 1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
-          
-            
 
     # Renderização do jogo
     tela.fill(BRANCO)
