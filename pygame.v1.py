@@ -18,7 +18,7 @@ num_blocos_y = altura // altura_bloco
 
 # Classe para representar o jogador
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y):   
         super().__init__()
         self.image = pygame.Surface((largura_bloco, altura_bloco))
         self.image.fill(VERDE)
@@ -49,6 +49,8 @@ class Carro(pygame.sprite.Sprite):
             self.rect.right = 0
         if self.rect.right < 0:
             self.rect.left = largura
+
+
 
 # Inicialização do Pygame
 pygame.init()
@@ -113,6 +115,8 @@ while rodando:
         jogador.rect.y = num_blocos_y - 1
         if jogador.rect.y == num_blocos_y - 1:
             pontuacao += 1
+            jogador.rect.x = largura // 2
+            jogador.rect.y = altura - altura_bloco
           
             
 
