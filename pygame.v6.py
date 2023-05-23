@@ -97,6 +97,7 @@ class Jacare(pygame.sprite.Sprite):
 
         self.ticks += 1
         if self.ticks >= 60 and self.afunda == True:
+
             if self.cor_atual == VERDE_CLARO:
                 self.image.fill(VERDE) 
                 self.cor_atual = VERDE
@@ -206,6 +207,8 @@ clock = pygame.time.Clock()
 
 tecla_solta = True
 
+em_cima_jacare_verde_claro = False
+
 while rodando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -250,19 +253,21 @@ while rodando:
     if troncos_colididos:
         jogador.rect.x += troncos_colididos[0].velocidade
     
+    
     jacares_colididos = pygame.sprite.spritecollide(jogador, jacares, False)
     if jacares_colididos:
         jogador.rect.x += jacares_colididos[0].velocidade
+        if jacares_colididos[0].cor_atual == VERDE_CLARO:
+            em_cima_jacare_verde_claro = True
+        else:
+            em_cima_jacare_verde_claro = False
 
     if not jacares_colididos and not troncos_colididos:
     # Verifica se o jogador encostou na região azul
         if jogador.rect.colliderect(pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco)):
             rodando = False
-    
-    for jacare in jacares:
-        if jacare.cor_atual == VERDE_CLARO and jacares_colididos:
-            rodando = False
-
+    if em_cima_jacare_verde_claro:
+        rodando = False
 
 
     # Renderização do jogo
