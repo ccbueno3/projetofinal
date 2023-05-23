@@ -12,10 +12,23 @@ CINZA = (128,128,128)
 VERMELHO = (255,0,0)
 
 #imagens 
+
+#logo
 imagem_logo = pygame.image.load("imagens/oi.jpg")
-tamanho_x_logo = 100
-tamanho_y_logo = 100
+tamanho_x_logo = 800
+tamanho_y_logo = 700
 imagem_logo = pygame.transform.scale(imagem_logo, (tamanho_x_logo, tamanho_y_logo))
+
+
+#configurações
+imagem_configuracoes = pygame.image.load("imagens/oi.jpg")
+tamanho_x_configuracoes = 100
+tamanho_y_configuracoes = 100
+imagem_configuracoes = pygame.transform.scale(imagem_configuracoes, (tamanho_x_configuracoes, tamanho_y_configuracoes))
+
+#imagem fundo
+imagem_fundo = pygame.image.load("imagens/fundo.png")
+imagem_fundo = pygame.transform.scale(imagem_fundo,(800,700))
 
 
 def tela_inicio():
@@ -46,12 +59,13 @@ def tela_inicio():
         fonte_inicio = pygame.font.SysFont(None, 36)
 
         if texto_inicial:
-            tela.blit(imagem_logo,((largura - tamanho_x_logo)/2,0))
+            #tela.blit(imagem_logo,((largura - tamanho_x_logo)/2,0))
             texto_inicio = fonte_inicio.render("Pressione 'Enter' para iniciar", True, PRETO)
             texto_embaixo = fonte_inicio.render("Pressione 'T' para aprender a jogar", True, PRETO)
             tela.blit(texto_inicio, (largura // 2 - texto_inicio.get_width() // 2, altura * 2 // 3 - texto_inicio.get_height() // 2))
             tela.blit(texto_embaixo, (largura // 2 - texto_embaixo.get_width() // 2, altura * 2.1 // 3 - texto_embaixo.get_height() // 2))
         else:
+            #tela.blit(imagem_configuracoes,(0,0))
             informacoes = fonte_inicio.render("W - anda para cima", True, PRETO)
             tela.blit(informacoes, (largura // 2 - informacoes.get_width() // 2, altura // 3 - informacoes.get_height() // 2))
             informacoes = fonte_inicio.render("A - anda para esquerda", True, PRETO)
@@ -426,6 +440,7 @@ def jogo_principal():
         # Preenchendo a área por onde passam os carros com a cor preta
         pygame.draw.rect(tela, PRETO, pygame.Rect(0, (num_blocos_y // 2 + 1) * altura_bloco, largura, (num_blocos_y - 9) * altura_bloco))
 
+        tela.blit(imagem_fundo,(0,0))
         # Desenha os sprites 
         sprites.draw(tela)
 
