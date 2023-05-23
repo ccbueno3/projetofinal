@@ -72,7 +72,10 @@ class Tronco(pygame.sprite.Sprite):
 class Jacare(pygame.sprite.Sprite):
     def __init__(self, x, y, velocidade):
         super().__init__()
-        self.image = pygame.Surface((largura_bloco*3, altura_bloco))
+        if y == altura_rio[1] +1:
+            self.image = pygame.Surface((largura_bloco*2, altura_bloco))
+        else:
+            self.image = pygame.Surface((largura_bloco*3, altura_bloco))
         self.image.fill(VERDE)
         self.rect = self.image.get_rect()
         self.rect.x = x * largura_bloco
@@ -110,7 +113,9 @@ altura_rio = range(num_blocos_y//2-1)
 
 # Criação dos troncos
 troncos = pygame.sprite.Group()
-for i in altura_rio:
+y_troncos = [altura_rio[0],altura_rio[2],altura_rio[3],altura_rio[4]]
+
+for i in y_troncos:
     x_values = random.sample(range(0, num_blocos_x - 8),1)  # Amostra aleatória de 3 valores únicos
     y = i + 1
     velocidade = random.choice([-1, 1] ) * largura_bloco // 4
@@ -123,13 +128,19 @@ for i in altura_rio:
 jacares = pygame.sprite.Group()
 y_jacares = [altura_rio[1],altura_rio[5]]
 for i in y_jacares:
-    x_values = random.sample(range(0, num_blocos_x - 8),1)
     y = i + 1
-    velocidade = random.choice([-1, 1] ) * largura_bloco // 4
-    for x in range(0,14, 4):
-        jacare = Jacare(x, y, velocidade)
-        sprites.add(jacare)
-        jacares.add(jacare)
+    velocidade =  -largura_bloco // 4
+    if i == y_jacares[1]:
+        for x in range(0,11, 5):
+            jacare = Jacare(x, y, velocidade)
+            sprites.add(jacare)
+            jacares.add(jacare)
+    else:
+        for x in range(0,13, 3):
+            jacare = Jacare(x, y, velocidade)
+            sprites.add(jacare)
+            jacares.add(jacare)
+    
 
 # Criação do jogador
 jogador = Player(num_blocos_x // 2, num_blocos_y - 1)  # Posição inicial do jogador (centro da linha inferior)
@@ -178,11 +189,17 @@ while rodando:
             pontuacao += 1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
-    # Verifica se o jogador está colidindo com algum tronco
+
+    # Verifica se o jogador está colidindo com algum tronco/jacare
     troncos_colididos = pygame.sprite.spritecollide(jogador, troncos, False)
     if troncos_colididos:
         jogador.rect.x += troncos_colididos[0].velocidade
-    else:
+    
+    jacares_colididos = pygame.sprite.spritecollide(jogador, jacares, False)
+    if jacares_colididos:
+        jogador.rect.x += jacares_colididos[0].velocidade
+
+    if not jacares_colididos and not troncos_colididos:
     # Verifica se o jogador encostou na região azul
         if jogador.rect.colliderect(pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco)):
             rodando = False
