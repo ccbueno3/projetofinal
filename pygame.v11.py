@@ -27,7 +27,7 @@ tamanho_y_configuracoes = 100
 imagem_configuracoes = pygame.transform.scale(imagem_configuracoes, (tamanho_x_configuracoes, tamanho_y_configuracoes))
 
 #imagem fundo
-imagem_fundo = pygame.image.load("imagens/fundo.png")
+imagem_fundo = pygame.image.load("imagens/mapa_final.png")
 imagem_fundo = pygame.transform.scale(imagem_fundo,(800,700))
 
 
