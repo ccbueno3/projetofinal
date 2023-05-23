@@ -138,7 +138,9 @@ sprites = pygame.sprite.Group()
 
 # Criação dos carros
 carros = pygame.sprite.Group()
-for i in range(num_blocos_y // 2, num_blocos_y - 2):
+y_carros = range(num_blocos_y // 2, num_blocos_y - 2)
+
+for i in y_carros:
     x = random.randint(0, num_blocos_x - 1)
     y = i + 1
     velocidade = random.choice([-1, 1]) * largura_bloco // 12
@@ -151,9 +153,6 @@ altura_rio = range(num_blocos_y//2-1)
 # Criação dos troncos
 troncos = pygame.sprite.Group()
 y_troncos = [altura_rio[0],altura_rio[2],altura_rio[3],altura_rio[4]]
-
-
- 
 tamanho_tronco = [5,4,7 ,3]
 for i in y_troncos:
     y = i + 1
@@ -221,8 +220,7 @@ fonte = pygame.font.SysFont(None, 36)
 pontuacao = 0
 pontuacao_para_ganhar = 5
 lobos = pygame.sprite.Group()
-if pontuacao == 3:
-
+if pontuacao == 2:
     x = largura +largura_bloco
     y = num_blocos_y // 2 
     velocidade = -largura_bloco // 25
@@ -234,9 +232,15 @@ if pontuacao == 3:
 rodando = True
 clock = pygame.time.Clock()
 
+#variavel para nao permitir que o jogador se mova segurando a tecla
 tecla_solta = True
 
 em_cima_jacare_verde_claro = False
+
+#cria uma variavel para o jogo nao gerar um lobo multiplas vezes 
+um_lobo = True
+#velocidade padrão
+
 
 while rodando:
     for event in pygame.event.get():
@@ -244,6 +248,16 @@ while rodando:
             rodando = False
         elif event.type == pygame.KEYUP:  # Evento de tecla solta
             tecla_solta = True
+    
+    #gera o lobo
+    if pontuacao == 1 and um_lobo:
+        x = largura +largura_bloco
+        y = num_blocos_y // 2 
+        velocidade = -largura_bloco // 25 
+        lobo = Lobo(x, y, velocidade)
+        sprites.add(lobo)
+        lobos.add(lobo) 
+        um_lobo = False
 
     keys = pygame.key.get_pressed()
     dx = 0
@@ -316,7 +330,7 @@ while rodando:
 
     pygame.display.flip()
 
-    clock.tick(30)  # Ajuste a velocidade do jogo aqui
+    clock.tick(30 + pontuacao*10)  # Ajuste a velocidade do jogo aqui
 
     # Verifica se o jogador ganhou o jogo
     if pontuacao >= pontuacao_para_ganhar:
