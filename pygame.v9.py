@@ -11,7 +11,6 @@ VERDE_CLARO = (0,255,0)
 CINZA = (128,128,128)
 VERMELHO = (255,0,0)
 
-
 # Dimensões da janela do jogo
 largura = 800
 altura = 700
