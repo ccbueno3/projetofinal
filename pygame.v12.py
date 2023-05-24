@@ -124,10 +124,13 @@ def jogo_principal():
 
     # Classe para representar os carros
     class Carro(pygame.sprite.Sprite):
-        def __init__(self, x, y, velocidade, tamanho):
+        def __init__(self, x, y, velocidade, tamanho, tipo):
             super().__init__()
-            self.image = pygame.Surface((largura_bloco*tamanho, altura_bloco))
-            self.image.fill(VERMELHO)
+            if tipo == 1:
+                self.image = pygame.image.load("imagens/caminhao_roxo.png")
+            else:
+                self.image = pygame.Surface((largura_bloco*tamanho, altura_bloco))
+                self.image.fill(VERMELHO)
             self.mask = pygame.mask.from_surface(self.image)
             self.rect = self.image.get_rect()
             self.rect.x = x * largura_bloco
@@ -245,38 +248,38 @@ def jogo_principal():
         x = random.randint(0, num_blocos_x - 1)
         y = i + 1
         velocidade = largura_bloco // 12
-        #caminhão
+        #caminhão (1)
         if i == y_carros[0]:
             for x in range(0,15,6):
-                carro = Carro(x, y, -velocidade, 2)
+                carro = Carro(x, y, -velocidade, 2,1)
                 sprites.add(carro)
                 carros.add(carro)
 
-        #moto
+        #moto (2)
         elif i == y_carros[1]:
             for x in range(0,6,3):
-                carro = Carro(x, y, velocidade*3, 1)
+                carro = Carro(x, y, velocidade*3, 1,2)
                 sprites.add(carro)
                 carros.add(carro)
         
-        #sedan
+        #sedan (3)
         elif i == y_carros[2]:
             for x in range(0,15,5):
-                carro = Carro(x,y,-velocidade,1 )
+                carro = Carro(x,y,-velocidade,1 ,3)
                 sprites.add(carro)
                 carros.add(carro)
 
-        #camionete 
+        #camionete (4)
         elif i == y_carros[3]:
             for x in range(0,15,6):
-                carro = Carro(x,y,velocidade,1 )
+                carro = Carro(x,y,velocidade,1,  4)
                 sprites.add(carro)
                 carros.add(carro)
 
-        #fusca
+        #fusca (5)
         elif i == y_carros[4]:
             for x in range(0,15,5):
-                carro = Carro(x,y,-velocidade,1 )
+                carro = Carro(x,y,-velocidade,1 ,5)
                 sprites.add(carro)
                 carros.add(carro)
 
