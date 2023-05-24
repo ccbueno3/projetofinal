@@ -64,12 +64,15 @@ def obter_nome_jogador():
                     if len(nome) <= 10:
                         nome += event.unicode  
 
-        tela.fill(BRANCO)  
+        tela.blit(pygame.image.load("imagens/menu_foxxer.png"),(0,0))
 
         # Renderiza a caixa de texto
+         
         pygame.draw.rect(tela, cor_fundo, caixa_texto)
         texto_surface = fonte_texto.render(nome, True, cor_texto)
         tela.blit(texto_surface, (caixa_texto.x + 10, caixa_texto.y + 0))
+        texto_digite_nome = fonte_texto.render("Digite um nome de até 10 caracteres", True, PRETO)
+        tela.blit(texto_digite_nome, (400- texto_digite_nome.get_width()/2,250))
 
         pygame.display.flip()  # Atualiza a tela
 
