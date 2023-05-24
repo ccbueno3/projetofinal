@@ -388,7 +388,7 @@ def jogo_principal():
     vidas = 4
 
     lobos = pygame.sprite.Group()
-    if pontuacao == 2:
+    if pontuacao == 3:
         x = largura +largura_bloco
         y = num_blocos_y // 2 
         velocidade = -largura_bloco // 25
@@ -455,6 +455,7 @@ def jogo_principal():
             vidas -=1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
+
         if pygame.sprite.spritecollide(jogador,lobos,False, pygame.sprite.collide_mask):
             vidas -=1
             jogador.rect.x = largura // 2
@@ -488,10 +489,12 @@ def jogo_principal():
                 vidas -=1
                 jogador.rect.x = largura // 2
                 jogador.rect.y = altura - altura_bloco
+
         if em_cima_jacare_verde_claro:
             vidas -=1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
+            em_cima_jacare_verde_claro = False
 
         # Renderização do jogo
         tela.fill(BRANCO)
