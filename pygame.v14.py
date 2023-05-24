@@ -492,6 +492,17 @@ def jogo_principal():
 
 
         sprites.update()
+        
+        if pontuacao ==5:
+            # Exibe a mensagem de vitória
+            fonte_vitoria = pygame.font.SysFont("Comic Sans", 64)
+            texto_vitoria = fonte_vitoria.render("Você ganhou!", True, VERDE)
+            tela.blit(texto_vitoria, (largura // 2 - texto_vitoria.get_width() // 2, altura // 2 - texto_vitoria.get_height() // 2))
+            pygame.display.flip()
+            pygame.time.wait(3000)  # Espera 3 segundos antes de sair do jogo
+            pygame.quit()
+            return
+
 
         # Verifica colisões
         if pygame.sprite.spritecollide(jogador, carros, False, pygame.sprite.collide_mask):
