@@ -233,7 +233,6 @@ def jogo_principal():
             if self.ticks >= 60 and self.afunda == True:
 
                 if self.cor_atual == VERDE_CLARO:
-                    #self.image = pygame.image.load("imagens/jacare_base2.png")
                     if self.rect.y == (altura_rio[1]+ 1)*altura_bloco:
                         self.cor_atual = self.image = pygame.image.load("imagens/jacare_base3.png")
                     else:
@@ -398,10 +397,10 @@ def jogo_principal():
     #cria uma variavel para o jogo nao gerar um lobo multiplas vezes 
     um_lobo = True
 
-    #variável de tempo passado inicial
-    tempo_passado = 0
+
 
     while rodando:
+        tempo_passado = int(pygame.time.get_ticks()/1000)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 rodando = False
@@ -464,7 +463,7 @@ def jogo_principal():
             jogador.rect.x += troncos_colididos[0].velocidade
         
         
-        jacares_colididos = pygame.sprite.spritecollide(jogador, jacares, False, pygame.sprite.collide_mask)
+        jacares_colididos = pygame.sprite.spritecollide(jogador, jacares, False)
         if jacares_colididos:
             jogador.rect.x += jacares_colididos[0].velocidade
             if jacares_colididos[0].cor_atual == VERDE_CLARO:
@@ -497,20 +496,19 @@ def jogo_principal():
         sprites.draw(tela)
 
         # Exibe a pontuação na tela
-        texto_pontuacao = fonte.render("Pontuação: {}".format(pontuacao), True, PRETO)
+        texto_pontuacao = fonte.render("Pontuação: {}".format(pontuacao), True, LARANJA)
         tela.blit(texto_pontuacao, (10, 10))
 
-        texto_pontuacao = fonte.render("Vida: {}".format(vidas), True, PRETO)
-        tela.blit(texto_pontuacao, (largura-90, 10))
+        texto_pontuacao = fonte.render("Vidas: {}".format(vidas), True, VERMELHO)
+        tela.blit(texto_pontuacao, (largura-100, 10))
 
-        texto_tempo = fonte.render("Tempo: {} segundos".format(tempo_passado/(30 + pontuacao*5)),True, PRETO)
-        tela.blit(texto_tempo,(0,650))
+        texto_tempo = fonte.render("Tempo: {} segundos".format(tempo_passado),True, PRETO)
+        tela.blit(texto_tempo,(0,660))
 
         
         pygame.display.flip()
 
         ticks_jogo = 30 + pontuacao*5
-        tempo_passado += ticks_jogo
         clock.tick(ticks_jogo)  # Ajuste a velocidade do jogo aqui
 
         #exibe tempo na tela
@@ -531,5 +529,6 @@ def jogo_principal():
 
     # Finalização do Pygame
     pygame.quit()
+  
 
 tela_inicio()
