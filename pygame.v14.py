@@ -1,5 +1,7 @@
 import pygame
 import random
+import pygame.font
+
 
 pygame.init()
 pygame.mixer.init()
@@ -38,6 +40,42 @@ imagem_fundo = pygame.image.load("imagens/mapa_final.png")
 imagem_fundo = pygame.transform.scale(imagem_fundo,(800,700))
 
 
+def obter_nome_jogador():
+    nome = ""
+    fonte_texto = pygame.font.SysFont("Comic Sans", 32)
+    caixa_texto = pygame.Rect(250, 300, 300, 40)  # Posição e tamanho da caixa de texto
+    cor_texto = (255, 255, 255)  # Cor do texto na caixa de texto
+    cor_fundo = (0, 0, 0)  # Cor de fundo da caixa de texto
+    ativo = True
+    tela = pygame.display.set_mode((800, 700))
+
+    while ativo:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    ativo = False
+                    jogo_principal()
+                elif event.key == pygame.K_BACKSPACE:
+                    nome = nome[:-1]  
+                else:
+                    if len(nome) <= 10:
+                        nome += event.unicode  
+
+        tela.fill(BRANCO)  
+
+        # Renderiza a caixa de texto
+        pygame.draw.rect(tela, cor_fundo, caixa_texto)
+        texto_surface = fonte_texto.render(nome, True, cor_texto)
+        tela.blit(texto_surface, (caixa_texto.x + 10, caixa_texto.y + 0))
+
+        pygame.display.flip()  # Atualiza a tela
+
+    return nome
+
+
 
 def tela_inicio():
     pygame.init()
@@ -55,8 +93,8 @@ def tela_inicio():
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and texto_inicial:
+                    nome_jogador = obter_nome_jogador()  # Chama a função para obter o nome do jogador
                     iniciado = True
-                    jogo_principal()
                 elif event.key == pygame.K_t:
                     if texto_inicial:
                         texto_inicial = False
@@ -93,6 +131,7 @@ def tela_inicio():
             
                         
         pygame.display.flip()
+
 
 
 def jogo_principal():
