@@ -131,7 +131,7 @@ def jogo_principal():
                 colisoes = pygame.sprite.spritecollide(self, carros, False, pygame.sprite.collide_mask)
                 if colisoes:
                     self.invulneravel = True
-                    self.image.fill(VERMELHO)
+                    self.image = pygame.image.load("imagens/Raposa_dormindo.png")
 
             if 0 <= self.rect.x + dx < largura - largura_bloco and dx != 0 and not self.invulneravel:
                 self.rect.x += dx
@@ -169,8 +169,7 @@ def jogo_principal():
     class Lobo(pygame.sprite.Sprite):
         def __init__(self, x, y, velocidade):
             super().__init__()
-            self.image = pygame.Surface((largura_bloco, altura_bloco))
-            self.image.fill(CINZA)
+            self.image = pygame.image.load("imagens/lobo.png")
             self.mask = pygame.mask.from_surface(self.image)
             self.rect = self.image.get_rect()
             self.rect.x = x * largura_bloco
@@ -178,6 +177,12 @@ def jogo_principal():
             self.velocidade = velocidade
 
         def update(self):
+            if tempo_passado % 2 != 0:
+                self.image = pygame.image.load("imagens/lobo.png")
+            if tempo_passado % 2 == 0:
+                self.image = pygame.image.load("imagens/lobo2.png")
+
+
             self.rect.x += self.velocidade
             if self.rect.left > largura:
                 self.rect.right = 0
