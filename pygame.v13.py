@@ -129,7 +129,8 @@ def jogo_principal():
                     self.image = pygame.transform.scale(self.image,(50,50))
             if not self.invulneravel:
                 colisoes = pygame.sprite.spritecollide(self, carros, False, pygame.sprite.collide_mask)
-                if colisoes:
+                colisoes2 = jogador.rect.colliderect(pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco))
+                if colisoes or colisoes2:
                     self.invulneravel = True
                     self.image = pygame.image.load("imagens/Raposa_dormindo.png")
 
