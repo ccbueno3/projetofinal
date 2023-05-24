@@ -143,10 +143,16 @@ def jogo_principal():
         def __init__(self, x, y, velocidade, tamanho, tipo):
             super().__init__()
             if tipo == 1:
-                self.image = pygame.image.load("imagens/caminhao_roxo.png")
+                self.image = pygame.image.load("imagens/caminhao.png")
+            elif tipo == 2:
+                self.image = pygame.image.load("imagens/Moto.png")
+            elif tipo == 3:
+                self.image = pygame.image.load("imagens/carro_fogo.png")
+            elif tipo == 4:
+                self.image = pygame.image.load("imagens/Fusca.png")
             else:
-                self.image = pygame.Surface((largura_bloco*tamanho, altura_bloco))
-                self.image.fill(VERMELHO)
+                self.image = pygame.image.load("imagens/Savero.png")
+
             self.mask = pygame.mask.from_surface(self.image)
             self.rect = self.image.get_rect()
             self.rect.x = x * largura_bloco
