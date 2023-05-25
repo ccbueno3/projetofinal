@@ -46,7 +46,7 @@ def obter_nome_jogador():
     altura = 700
     tela = pygame.display.set_mode((largura, altura))
     nome = ""
-    fonte_texto = pygame.font.SysFont("Arial", 32)
+    fonte_texto = pygame.font.SysFont("Comic Sans", 32)
     caixa_texto = pygame.Rect(250, 300, 300, 40)  # Posição e tamanho da caixa de texto
     cor_texto = (255, 255, 255)  # Cor do texto na caixa de texto
     cor_fundo = (0, 0, 0)  # Cor de fundo da caixa de texto
@@ -60,17 +60,22 @@ def obter_nome_jogador():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     ativo = False  # Sai do loop quando o jogador pressionar Enter
+                    jogo_principal(nome)
                 elif event.key == pygame.K_BACKSPACE:
                     nome = nome[:-1]  # Remove o último caractere do nome se o jogador pressionar Backspace
                 else:
-                    nome += event.unicode  # Adiciona o caractere digitado ao nome
+                    if len(nome) <10:
+                        nome += event.unicode  # Adiciona o caractere digitado ao nome
 
-        tela.fill(BRANCO)  # Preenche a tela com a cor branca
+
+        tela.blit(pygame.image.load("imagens/menu_foxxer.png"),(0,0)) #gera fundo
+        texto_pede_nome = fonte_texto.render("Digite um nome de até 10 caracteres", True, PRETO)
+        tela.blit(texto_pede_nome,(400 - texto_pede_nome.get_width()/2, 250))
 
         # Renderiza a caixa de texto
         pygame.draw.rect(tela, cor_fundo, caixa_texto)
         texto_surface = fonte_texto.render(nome, True, cor_texto)
-        tela.blit(texto_surface, (caixa_texto.x + 10, caixa_texto.y + 10))
+        tela.blit(texto_surface, (caixa_texto.x + 10, caixa_texto.y ))
 
         pygame.display.flip()  # Atualiza a tela
 
@@ -95,9 +100,9 @@ def tela_inicio():
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and texto_inicial:
-                    nome_jogador = obter_nome_jogador()  # Chama a função para obter o nome do jogador
+                    obter_nome_jogador()  # Chama a função para obter o nome do jogador
                     iniciado = True
-                    jogo_principal(nome_jogador)
+
                 elif event.key == pygame.K_t:
                     if texto_inicial:
                         texto_inicial = False
