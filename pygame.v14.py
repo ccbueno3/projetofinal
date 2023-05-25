@@ -47,6 +47,9 @@ def tela_vitoria():
     pygame.display.set_caption("Foxxer")
     fonte = pygame.font.SysFont("Comic Sans", 48)
 
+    with open("top_jogadores.json", "r") as arquivo:
+        dados = json.load(arquivo)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,6 +59,15 @@ def tela_vitoria():
         tela.fill(BRANCO)
         texto_vitoria = fonte.render("Você venceu!", True, PRETO)
         tela.blit(texto_vitoria, (largura // 2 - texto_vitoria.get_width() // 2, altura // 3 - texto_vitoria.get_height() // 2))
+
+        jogadores_ordenados = sorted(dados.items(), key=lambda x: x[1], reverse=False)
+
+        # Exibir nomes e pontuações dos jogadores
+        y_pos = altura // 2  # Posição inicial vertical para exibir os nomes
+        for jogador, pontuacao in jogadores_ordenados:
+            texto_jogador = fonte.render(f"{jogador}: {pontuacao}", True, PRETO)
+            tela.blit(texto_jogador, (largura // 2 - texto_jogador.get_width() // 2, y_pos))
+            y_pos += 40  # Espaçamento vertical entre os jogadores
 
         pygame.display.flip()
 
@@ -501,13 +513,13 @@ def jogo_principal(nome_jogador):
         keys = pygame.key.get_pressed()
         dx = 0
         dy = 0
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             dx = -largura_bloco
-        elif keys[pygame.K_d]:
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             dx = largura_bloco  
-        elif keys[pygame.K_w]:
+        elif keys[pygame.K_w] or keys[pygame.K_UP]:
             dy = -altura_bloco
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
             dy = altura_bloco
 
         if dx != 0 or dy != 0:
@@ -612,14 +624,14 @@ def jogo_principal(nome_jogador):
 
 
         # Verifica se o jogador ganhou o jogo
-        if pontuacao >= 0:
+        if pontuacao >= 5:
             tela_vitoria()
 
         if vidas == 0:
-            rodando = False
+            tela_inicio()
 
     # Mensagem de vitória ou derrota
-    if pontuacao >= pontuacao_para_ganhar:
+    if pontuacao >= 5:
         print("Você ganhou!")
     else:
         print("Você perdeu!")
