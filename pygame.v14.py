@@ -606,9 +606,14 @@ def jogo_principal(nome_jogador):
         if pontuacao == 5:
             with open('top_jogadores.json', 'r') as arquivo_json:
                 texto = arquivo_json.read()
-
+            
             dicionario = json.loads(texto)
-            dicionario[nome_jogador] = tempo_passado
+            if nome_jogador in dicionario:
+                if tempo_passado < dicionario[nome_jogador]:
+                    dicionario[nome_jogador] = tempo_passado
+
+            else:
+                dicionario[nome_jogador] = tempo_passado
             novo_json = json.dumps(dicionario)
 
             with open('top_jogadores.json', 'w') as arquivo_json:
