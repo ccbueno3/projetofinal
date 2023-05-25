@@ -40,6 +40,27 @@ imagem_configuracoes = pygame.transform.scale(imagem_configuracoes, (tamanho_x_c
 imagem_fundo = pygame.image.load("imagens/mapa_final.png")
 imagem_fundo = pygame.transform.scale(imagem_fundo,(800,700))
 
+def tela_vitoria():
+    largura = 800
+    altura = 700
+    tela = pygame.display.set_mode((largura, altura))
+    pygame.display.set_caption("Foxxer")
+    fonte = pygame.font.SysFont("Comic Sans", 48)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+
+        tela.fill(BRANCO)
+        texto_vitoria = fonte.render("Você venceu!", True, PRETO)
+        tela.blit(texto_vitoria, (largura // 2 - texto_vitoria.get_width() // 2, altura // 3 - texto_vitoria.get_height() // 2))
+
+        pygame.display.flip()
+
+
+
 
 def obter_nome_jogador():
     largura = 800
@@ -591,8 +612,8 @@ def jogo_principal(nome_jogador):
 
 
         # Verifica se o jogador ganhou o jogo
-        if pontuacao >= pontuacao_para_ganhar:
-            rodando = False
+        if pontuacao >= 0:
+            tela_vitoria()
 
         if vidas == 0:
             rodando = False
@@ -603,6 +624,7 @@ def jogo_principal(nome_jogador):
     else:
         print("Você perdeu!")
 
+ 
     # Finalização do Pygame
     pygame.quit()
   
