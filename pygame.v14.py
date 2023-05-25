@@ -286,7 +286,6 @@ def jogo_principal(nome_jogador):
                 self.rect.right = 0
             if self.rect.right < 0:
                 self.rect.left = largura
-
             self.ticks += 1
             if self.ticks >= 60 and self.afunda == True:
 
@@ -456,9 +455,10 @@ def jogo_principal(nome_jogador):
     um_lobo = True
 
 
+    tempo_no_inicio = int(pygame.time.get_ticks()/1000)
 
     while rodando:
-        tempo_passado = int(pygame.time.get_ticks()/1000)
+        tempo_passado = int(pygame.time.get_ticks()/1000) - tempo_no_inicio
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 rodando = False
