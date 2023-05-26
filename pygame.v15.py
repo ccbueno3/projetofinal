@@ -623,7 +623,7 @@ def jogo_principal(nome_jogador):
                 texto = arquivo_json.read()
 
             dicionario = json.loads(texto)
-            if len(dicionario) != 0:
+            if len(dicionario) >=5:
                 quinto_lugar =  max(dicionario, key=dicionario.get)
                 if dicionario[quinto_lugar] > tempo_passado and nome_jogador not in dicionario:
                     del dicionario[quinto_lugar]
