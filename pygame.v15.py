@@ -173,8 +173,16 @@ def tela_inicio():
                         
         pygame.display.flip()
 
+som_afogar = pygame.mixer.Sound('audios/afogar.wav')
+som_andar = pygame.mixer.Sound('audios/andar.wav')
+som_atropelar = pygame.mixer.Sound('audios/atropelar.wav')
+som_ponto = pygame.mixer.Sound('audios/ponto.wav')
+som_mordida =  pygame.mixer.Sound('audios/mordida.wav')
+
 
 def jogo_principal(nome_jogador):
+
+    #audios
     # Dimensões da janela do jogo
     largura = 800
     altura = 700
@@ -197,6 +205,7 @@ def jogo_principal(nome_jogador):
             self.rect.y = y * altura_bloco
             self.invulneravel = False
             self.ticks_invulneravel = 0
+            self.som_andar = pygame.mixer.Sound('audios/andar.wav')
 
         def update(self, dx=0, dy=0):
             if self.invulneravel:
@@ -215,8 +224,10 @@ def jogo_principal(nome_jogador):
 
             if 0 <= self.rect.x + dx < largura - largura_bloco and dx != 0 and not self.invulneravel:
                 self.rect.x += dx
+                self.som_andar.play()
             if 0 <= self.rect.y + dy < altura - altura_bloco and dy != 0 and not self.invulneravel:
                 self.rect.y += dy
+                self.som_andar.play()
 
     # Classe para representar os carros
     class Carro(pygame.sprite.Sprite):
@@ -462,7 +473,7 @@ def jogo_principal(nome_jogador):
 
     # Variáveis de pontuação e reinício
     pontuacao = 0
-    pontuacao_para_ganhar = 1
+    pontuacao_para_ganhar = 5
     #vidas 
     vidas = 4
 
@@ -532,6 +543,7 @@ def jogo_principal(nome_jogador):
 
         # Verifica colisões
         if pygame.sprite.spritecollide(jogador, carros, False, pygame.sprite.collide_mask):
+            pygame.mixer.Sound('audios/atropelar.wav').play()
             vidas -=1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
@@ -545,6 +557,7 @@ def jogo_principal(nome_jogador):
         if jogador.rect.y < altura_bloco:
             jogador.rect.y = num_blocos_y - 1
             if jogador.rect.y == num_blocos_y - 1:
+                pygame.mixer.Sound('audios/ponto.wav').play()
                 pontuacao += 1
                 jogador.rect.x = largura // 2
                 jogador.rect.y = altura - altura_bloco
@@ -566,11 +579,13 @@ def jogo_principal(nome_jogador):
         if not jacares_colididos and not troncos_colididos:
         # Verifica se o jogador encostou na região azul
             if jogador.rect.colliderect(pygame.Rect(0, altura_bloco, largura, (num_blocos_y // 2 - 1) * altura_bloco)):
+                pygame.mixer.Sound('audios/afogar.wav').play()
                 vidas -=1
                 jogador.rect.x = largura // 2
                 jogador.rect.y = altura - altura_bloco
 
         if em_cima_jacare_verde_claro:
+            pygame.mixer.Sound('audios/mordida.wav').play()
             vidas -=1
             jogador.rect.x = largura // 2
             jogador.rect.y = altura - altura_bloco
@@ -608,10 +623,10 @@ def jogo_principal(nome_jogador):
                 texto = arquivo_json.read()
 
             dicionario = json.loads(texto)
-            quinto_lugar =  max(dicionario, key=dicionario.get)
-
-            if dicionario[quinto_lugar] > tempo_passado and nome_jogador not in dicionario:
-                del dicionario[quinto_lugar]
+            if len(dicionario) != 0:
+                quinto_lugar =  max(dicionario, key=dicionario.get)
+                if dicionario[quinto_lugar] > tempo_passado and nome_jogador not in dicionario:
+                    del dicionario[quinto_lugar]
 
 
             if nome_jogador in dicionario:
