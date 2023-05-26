@@ -462,7 +462,7 @@ def jogo_principal(nome_jogador):
 
     # Variáveis de pontuação e reinício
     pontuacao = 0
-    pontuacao_para_ganhar = 5
+    pontuacao_para_ganhar = 1
     #vidas 
     vidas = 4
 
@@ -603,11 +603,17 @@ def jogo_principal(nome_jogador):
 
 
         #armazena nome do jogador e tempo completado em json
-        if pontuacao == 5:
+        if pontuacao == pontuacao_para_ganhar:
             with open('top_jogadores.json', 'r') as arquivo_json:
                 texto = arquivo_json.read()
-            
+
             dicionario = json.loads(texto)
+            quinto_lugar =  max(dicionario, key=dicionario.get)
+
+            if dicionario[quinto_lugar] > tempo_passado and nome_jogador not in dicionario:
+                del dicionario[quinto_lugar]
+
+
             if nome_jogador in dicionario:
                 if tempo_passado < dicionario[nome_jogador]:
                     dicionario[nome_jogador] = tempo_passado
@@ -630,7 +636,7 @@ def jogo_principal(nome_jogador):
 
 
         # Verifica se o jogador ganhou o jogo
-        if pontuacao >= 5:
+        if pontuacao >= pontuacao_para_ganhar:
             tela_vitoria()
 
         if vidas == 0:
