@@ -2,7 +2,7 @@ import pygame
 import random
 import json
 import pygame.font
-
+import time
 
 pygame.init()
 pygame.mixer.init()
@@ -40,6 +40,33 @@ imagem_configuracoes = pygame.transform.scale(imagem_configuracoes, (tamanho_x_c
 imagem_fundo = pygame.image.load("imagens/mapa_final.png")
 imagem_fundo = pygame.transform.scale(imagem_fundo,(800,700))
 
+def tela_derrota():
+    largura = 800
+    altura = 700
+    tela = pygame.display.set_mode((largura, altura))
+    pygame.display.set_caption("Foxxer")
+    fonte = pygame.font.SysFont("Comic Sans", 48)
+    tempo_inicial = time.time()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+
+        tela.blit(pygame.image.load("imagens/tela_derrota.png"), (0, 0))
+        texto_derrota = fonte.render("Você perdeu!", True, PRETO)
+        tela.blit(texto_derrota, (largura // 2 - texto_derrota.get_width() // 2, (altura-200) // 4+ - texto_derrota.get_height() // 2))
+
+        tempo_atual = time.time()
+        if tempo_atual - tempo_inicial >= 3:
+            tela_inicio()
+
+        pygame.display.flip()
+
+
+
+
 def tela_vitoria():
     largura = 800
     altura = 700
@@ -58,9 +85,13 @@ def tela_vitoria():
 
         tela.blit(pygame.image.load("imagens/tela_vitoria.png"),(0,0))
         texto_vitoria = fonte.render("Você venceu!", True, PRETO)
+        texto_top5 = fonte.render("TOP 5 Menores tempos:", True, PRETO)
         caixa_texto = pygame.Rect(largura/2  - 180, 360, 360, 5*45)
         pygame.draw.rect(tela, PRETO, caixa_texto)
+
         tela.blit(texto_vitoria, (largura // 2 - texto_vitoria.get_width() // 2, altura // 3 - texto_vitoria.get_height() // 2))
+        tela.blit(texto_top5, (largura // 2 - texto_top5.get_width() // 2, 300))
+
         jogadores_ordenados = sorted(dados.items(), key=lambda x: x[1], reverse=False)
         # Exibir nomes e pontuações dos jogadores
         y_pos = altura // 2  # Posição inicial vertical para exibir os nomes
@@ -473,7 +504,7 @@ def jogo_principal(nome_jogador):
 
     # Variáveis de pontuação e reinício
     pontuacao = 0
-    pontuacao_para_ganhar = 0
+    pontuacao_para_ganhar = 5
     #vidas 
     vidas = 4
 
@@ -655,7 +686,7 @@ def jogo_principal(nome_jogador):
             tela_vitoria()
 
         if vidas == 0:
-            tela_inicio()
+            tela_derrota()
 
     # Mensagem de vitória ou derrota
     if pontuacao >= 5:
