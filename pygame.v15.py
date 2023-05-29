@@ -56,16 +56,16 @@ def tela_vitoria():
                 pygame.quit()
                 return
 
-        tela.fill(BRANCO)
+        tela.blit(pygame.image.load("imagens/tela_vitoria.png"),(0,0))
         texto_vitoria = fonte.render("Você venceu!", True, PRETO)
+        caixa_texto = pygame.Rect(largura/2  - 180, 360, 360, 5*45)
+        pygame.draw.rect(tela, PRETO, caixa_texto)
         tela.blit(texto_vitoria, (largura // 2 - texto_vitoria.get_width() // 2, altura // 3 - texto_vitoria.get_height() // 2))
-
         jogadores_ordenados = sorted(dados.items(), key=lambda x: x[1], reverse=False)
-
         # Exibir nomes e pontuações dos jogadores
         y_pos = altura // 2  # Posição inicial vertical para exibir os nomes
         for jogador, pontuacao in jogadores_ordenados:
-            texto_jogador = fonte.render(f"{jogador}: {pontuacao}", True, PRETO)
+            texto_jogador = fonte.render(f"{jogador}: {pontuacao}", True, BRANCO)
             tela.blit(texto_jogador, (largura // 2 - texto_jogador.get_width() // 2, y_pos))
             y_pos += 40  # Espaçamento vertical entre os jogadores
 
@@ -473,7 +473,7 @@ def jogo_principal(nome_jogador):
 
     # Variáveis de pontuação e reinício
     pontuacao = 0
-    pontuacao_para_ganhar = 5
+    pontuacao_para_ganhar = 0
     #vidas 
     vidas = 4
 
