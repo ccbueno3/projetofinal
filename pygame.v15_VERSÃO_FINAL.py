@@ -541,6 +541,7 @@ def jogo_principal(nome_jogador):
                 tecla_solta = True
                 if event.key == pygame.K_ESCAPE:  # Verifica se a tecla Esc foi pressionada
                     rodando = False
+                    tela_inicio()
         
         #gera o lobo
         if pontuacao == 3 and um_lobo:
